@@ -29,6 +29,27 @@ This project implements a secure client-server communication framework using AES
 
 ---
 
+## Running the Project
+
+### Start the Server
+python server.py
+
+### Start the Client
+python client.py
+
+> Note: File names may vary by module (e.g., m0_updated_project_client.py, m1_updated_project_server.py, etc.). Use the corresponding client and server files for each module.
+
+### Important
+
+- The client uses iptables for automated blocking upon detection.
+- Ensure the client is run with sufficient privileges:
+
+sudo python client.py
+
+- Without sudo, firewall rules will not be applied correctly.
+
+---
+
 ## Modules
 
 ### Module 0: Basic Pipeline
